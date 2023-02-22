@@ -51,8 +51,29 @@ let scrollY = window.scrollY
 let currentSection = 0
 window.addEventListener('scroll', () => {
     scrollY = window.scrollY
-    const newSection = Math.random(scrollY / sizes.height)
+    const newSection = Math.round(scrollY / sizes.height)
     console.log(newSection);
+
+    if (newSection != currentSection) {
+      currentSection = newSection
+
+      if (!!donut) {
+        gsap.to(
+            donut.rotation, {
+              duration: 1.5,
+              ease: 'power2.inOut',
+              z: transformDonut[currentSection].rotationZ
+            }
+        )
+        gsap.to(
+          donut.position, {
+            duration: 1.5,an
+            ease: 'power2.inOut',
+            x: transformDonut[currentSection].positionX
+          }
+      )
+      }
+    }
 })
 
 //Sizes
