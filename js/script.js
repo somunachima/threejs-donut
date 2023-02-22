@@ -6,6 +6,31 @@ const canvas = document.querySelector('canvas.webgl')
 //Scene
 const scene = new THREE.Scene()
 
+//Overlay
+const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
+const overlayMaterial = new THREE.ShaderMaterial({
+  vertexShader: `
+    void main() {
+        gl_Position = vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform float uAlpha;
+    void main() {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+    }
+  `,
+  uniforms: {
+      uAlpha: {
+          value: 1.0
+      }
+  },
+  transparent: true
+})
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
+scene.add(overlay)
+
+
 //Test Cube
 // const cubeGeometry = new THREE.BoxGeometry(1, 1, 1, 1)
 // const cubeMaterial = new THREE.MeshBasicMaterial({
@@ -15,6 +40,9 @@ const scene = new THREE.Scene()
   // cubeGeometry, cubeMaterial
 // )
 // scene.add(cube)
+
+
+
 
 //GLTF Loader
 let donut = null;
@@ -67,7 +95,7 @@ window.addEventListener('scroll', () => {
         )
         gsap.to(
           donut.position, {
-            duration: 1.5,an
+            duration: 1.5,
             ease: 'power2.inOut',
             x: transformDonut[currentSection].positionX
           }
@@ -75,6 +103,11 @@ window.addEventListener('scroll', () => {
       }
     }
 })
+
+//On Reload
+window.onbeforeunload = function() {
+  window.scrollTo(0, 0)
+}
 
 //Sizes
 const sizes = {
