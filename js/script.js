@@ -4,31 +4,35 @@
 //Canvas
 const canvas = document.querySelector('canvas.webgl')
 
-//Textures
-//const textureLoader = new THREE.TextureLoader()
-//const alphaShadow = textureLoader.load('/assets/texture/simpleShadow.jpg');
-
 //Scene
 const scene = new THREE.Scene()
 
-const sphereShadow = new THREE.Mesh(
-  new THREE.PlaneGeometry(1.5, 1.5),
-  new THREE.MeshBasicMaterial({
-      transparent: true,
-      color: 0x000000,
-      opacity: 0.5,
-      alphaMap: alphaShadow
-  })
-)
-
-sphereShadow.rotation.x = -Math.PI * 0.5
-
-sphereShadow.position.y = -1
-sphereShadow.position.x = 1.5;
-
-scene.add(sphereShadow)
+//Overlay
+const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
+const overlayMaterial = new THREE.ShaderMaterial({
+  vertexShader: `
+    void main() {
+        gl_Position = vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform float uAlpha;
+    void main() {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+    }
+  `,
+  uniforms: {
+      uAlpha: {
+          value: 1.0
+      }
+  },
+  transparent: true
+})
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
+scene.add(overlay)
 
 //Loaders
+
 const loadingBarElement = document.querySelector('.loading-bar')
 const bodyElement = document.querySelector('body')
 const loadingManager = new THREE.LoadingManager(
@@ -61,31 +65,6 @@ const loadingManager = new THREE.LoadingManager(
       console.log('error');
     }
 )
-
-//Overlay
-const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-const overlayMaterial = new THREE.ShaderMaterial({
-  vertexShader: `
-    void main() {
-        gl_Position = vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    uniform float uAlpha;
-    void main() {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
-    }
-  `,
-  uniforms: {
-      uAlpha: {
-          value: 1.0
-      }
-  },
-  transparent: true
-})
-const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
-scene.add(overlay)
-
 
 
 //Test Cube
