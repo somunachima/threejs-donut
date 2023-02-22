@@ -1,10 +1,66 @@
 /**
  * Base
 */
+//Canvas
 const canvas = document.querySelector('canvas.webgl')
+
+//Textures
+//const textureLoader = new THREE.TextureLoader()
+//const alphaShadow = textureLoader.load('/assets/texture/simpleShadow.jpg');
 
 //Scene
 const scene = new THREE.Scene()
+
+const sphereShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1.5, 1.5),
+  new THREE.MeshBasicMaterial({
+      transparent: true,
+      color: 0x000000,
+      opacity: 0.5,
+      alphaMap: alphaShadow
+  })
+)
+
+sphereShadow.rotation.x = -Math.PI * 0.5
+
+sphereShadow.position.y = -1
+sphereShadow.position.x = 1.5;
+
+scene.add(sphereShadow)
+
+//Loaders
+const loadingBarElement = document.querySelector('.loading-bar')
+const bodyElement = document.querySelector('body')
+const loadingManager = new THREE.LoadingManager(
+    () => {
+        window.setTimeout(() => {
+            gsap.to(overlayMaterial.uniforms.uAlpha, {
+              duration: 3,
+              value: 0,
+              delay: 1
+            })
+            gsap.to(overlayMaterial.uniforms.uAlpha, {
+              duration: 3,
+              value: 0,
+              delay: 1
+            })
+
+            loadingBarElement.classList.add('ended')
+            bodyElement.classList.add('loaded')
+            loadingBarElement.style.transform = ''
+
+        },500)
+    },
+    (itemUrl, itemsLoaded, itemsTotal) => {
+      console.log(itemUrl, itemsLoaded, itemsTotal)
+      const progressRatio = itemsLoaded / itemsTotal
+      loadingBarElement.style.transform = `scaleX(${progressRatio})`
+      console.log(progressRatio)
+    },
+    () => {
+      console.log('error');
+    }
+)
 
 //Overlay
 const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
@@ -30,24 +86,6 @@ const overlayMaterial = new THREE.ShaderMaterial({
 const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
 scene.add(overlay)
 
-//Loaders
-const loadingManager = new THREE.LoadingManager(
-    () => {
-        window.setTimeout(() => {
-            gsap.to(overlayMaterial.uniforms.uAlpha, {
-              duration: 3,
-              value: 0,
-              delay: 1
-            })
-        },500)
-    },
-    () => {
-      console.log('progress');
-    },
-    () => {
-      console.log('error');
-    }
-)
 
 
 //Test Cube

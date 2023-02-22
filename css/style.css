@@ -24,6 +24,11 @@ body {
   width: 100%;
   font-family: 'Fredoka', sans-serif;
   background: #ffc0cb;
+  overflow: hidden;
+}
+
+body.loaded {
+  overflow: auto;
 }
 
 section {
@@ -118,4 +123,8 @@ p {
   transform-origin: top left;
 }
 
-
+.loading-bar.ended {
+  transform: scaleX(0);
+  transform-origin: 100% 0;
+  transition: transform 1.5s ease-in-out;
+}
