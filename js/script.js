@@ -27,6 +27,14 @@ const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 
 camera.position.z = 5
 scene.add(camera)
 
+//Light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+scene.add(ambientLight)
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+directionalLight.position.set(1, 2, 0)
+scene.add(directionalLight)
+
 //Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
@@ -38,3 +46,6 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 renderer.render(scene, camera)
+
+
+//Animation
