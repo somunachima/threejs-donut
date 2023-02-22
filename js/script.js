@@ -33,6 +33,9 @@ gltfLoader.load(
     scene.add(donut)
   })
 
+//Scroll
+
+
 //Sizes
 const sizes = {
   width: window.innerWidth,
@@ -74,6 +77,10 @@ const tick = () => {
   lastElapsedTime = elapsedTime
 
   // cube.rotation.y = Math.sin(elapsedTime)
+
+  if (!!donut) {
+    donut.position.y = Math.sin(elapsedTime * 0.5) * 0.1 - 0.1
+  }
 
   console.log('tick');
   renderer.render(scene, camera)
