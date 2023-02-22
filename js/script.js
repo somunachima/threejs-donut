@@ -51,14 +51,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const clock = new THREE.Clock()
 let lastElapsedTime = 0
 
-const tick = ( => {
+const tick = () => {
   const elapsedTime = clock.getElapsedTime()
   const deltaTime = elapsedTime - lastElapsedTime
   lastElapsedTime = elapsedTime
 
-  console.log(tick);
+  cube.rotation.y = Math.sin(elapsedTime)
+
+  console.log('tick');
   renderer.render(scene, camera)
 
-})
+  window.requestAnimationFrame(tick)
+
+}
 
 tick()
