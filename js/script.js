@@ -30,6 +30,25 @@ const overlayMaterial = new THREE.ShaderMaterial({
 const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
 scene.add(overlay)
 
+//Loaders
+const loadingManager = new THREE.LoadingManager(
+    () => {
+        window.setTimeout(() => {
+            gsap.to(overlayMaterial.uniforms.uAlpha, {
+              duration: 3,
+              value: 0,
+              delay: 1
+            })
+        },500)
+    },
+    () => {
+      console.log('progress');
+    },
+    () => {
+      console.log('error');
+    }
+)
+
 
 //Test Cube
 // const cubeGeometry = new THREE.BoxGeometry(1, 1, 1, 1)
@@ -46,7 +65,7 @@ scene.add(overlay)
 
 //GLTF Loader
 let donut = null;
-const gltfLoader = new THREE.GLTFLoader()
+const gltfLoader = new THREE.GLTFLoader(loadingManager)
 gltfLoader.load(
   './assets/donut/scene.gltf',
   (gltf) => {
