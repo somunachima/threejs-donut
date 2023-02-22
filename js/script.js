@@ -34,7 +34,26 @@ gltfLoader.load(
   })
 
 //Scroll
+const transformDonut = [
+  {
+      rotationZ: 0.45,
+      positionX: 1.5
+  }, {
+      rotationZ: - 0.45,
+      positionX: - 1.5
+  }, {
+      rotationZ: 0.0314,
+      positionX: 0
+  }
+]
 
+let scrollY = window.scrollY
+let currentSection = 0
+window.addEventListener('scroll', () => {
+    scrollY = window.scrollY
+    const newSection = Math.random(scrollY / sizes.height)
+    console.log(newSection);
+})
 
 //Sizes
 const sizes = {
