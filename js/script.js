@@ -16,6 +16,14 @@ const cube = new THREE.Mesh(
 )
 scene.add(cube)
 
+//GLTF Loader
+const gltfLoader = new THREE.GLTFLoader()
+gltfLoader.load(
+  './assets/donut/scene.gltf',
+  (gltf) => {
+    console.log(gltf);
+  })
+
 //Sizes
 const sizes = {
   width: window.innerWidth,
